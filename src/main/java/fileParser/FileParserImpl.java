@@ -187,7 +187,7 @@ public class FileParserImpl implements FileParser {
      * @return true | false
      */
     @Nonnull
-    private boolean validateDateFormat(@Nonnull final String dateFormat) {
+    private boolean validateDateFormat(@Nonnull final String dateFormat) throws InvalidFormatException {
         checkNull(dateFormat, "dateFormat");
 
         if (!dateFormat.matches(FileParserParams.DATE_FORMAT))
@@ -196,8 +196,9 @@ public class FileParserImpl implements FileParser {
             dateFormatThreadLocal.get().parse(dateFormat);
             return true;
         } catch (final ParseException ex) {
-            ex.printStackTrace();
+            // TODO logger
         }
+
         return false;
     }
 

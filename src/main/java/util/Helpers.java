@@ -3,6 +3,8 @@ package util;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import java.util.List;
+
 import static util.Validator.checkNull;
 
 /**
@@ -21,4 +23,9 @@ public class Helpers {
     public static boolean isStringEmpty(@Nullable final String input) {
         return (input == null || "".equals(input));
     }
+
+    public static <T> boolean isListEmpty(@Nullable final List<T> list) {
+        return (list == null || list.size()==0);
+    }
+
 }
