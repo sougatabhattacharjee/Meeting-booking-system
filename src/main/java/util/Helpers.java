@@ -15,7 +15,7 @@ public class Helpers {
     public static String trimWhiteSpaceOfString(@Nonnull final String input) {
         checkNull(input, "input");
 
-        if(!isStringEmpty(input))
+        if(Boolean.FALSE.equals(isStringEmpty(input)))
             return input.trim();
         return input;
     }

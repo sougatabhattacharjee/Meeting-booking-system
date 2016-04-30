@@ -22,10 +22,10 @@ public class FileParserImpl implements FileParser {
     public boolean validateCompanyOfficeHoursFormat(@Nonnull final String time) throws InvalidFormatException {
         checkNull(time, "time");
 
-        if (!validateStringFormatParts(time, FileParserParams.COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS))
+        if (Boolean.FALSE.equals(validateStringFormatParts(time, FileParserParams.COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS)))
             throw new InvalidFormatException("Invalid formatting. Line should contain " + FileParserParams.COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS + "parts");
 
-        if (!validateStringPattern(FileParserParams.COMPANY_OFFICE_HOURS_FORMAT, time))
+        if (Boolean.FALSE.equals(validateStringPattern(FileParserParams.COMPANY_OFFICE_HOURS_FORMAT, time)))
             throw new InvalidFormatException("Invalid time formatiing for company office hours. It should be in 24 hour " +
                     "clock format");
 
@@ -36,7 +36,7 @@ public class FileParserImpl implements FileParser {
     public boolean validateBookingRequestFormat(@Nonnull final String bookingRequestFormat) throws InvalidFormatException {
         checkNull(bookingRequestFormat, "bookingRequestFormat");
 
-        if (!validateStringFormatParts(bookingRequestFormat, FileParserParams.BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS)) {
+        if (Boolean.FALSE.equals(validateStringFormatParts(bookingRequestFormat, FileParserParams.BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS))) {
             throw new InvalidFormatException("Invalid formatting. " +
                     "request submission time, in the format [YYYY-MM-DD HH:MM:SS employee id]" +
                     " should contain " + FileParserParams.BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS + " parts");
@@ -49,15 +49,15 @@ public class FileParserImpl implements FileParser {
         final String timeFormat_HHMMSS = trimWhiteSpaceOfString(tokens[1]);
         final String employeeId = trimWhiteSpaceOfString(tokens[2]);
 
-        if (!validateDateFormat(dateFormat_YYYYMMDD)) {
+        if (Boolean.FALSE.equals(validateDateFormat(dateFormat_YYYYMMDD))) {
             throw new InvalidDateFormatException("Invalid date formatting for " + dateFormat_YYYYMMDD + " request submission time, in the format YYYY-MM-DD HH:MM:SS");
         }
 
-        if (!validateTimeFormatHHMMSS(timeFormat_HHMMSS)) {
+        if (Boolean.FALSE.equals(validateTimeFormatHHMMSS(timeFormat_HHMMSS))) {
             throw new InvalidDateFormatException("Invalid date formatting for " + timeFormat_HHMMSS + " request submission time, in the format YYYY-MM-DD HH:MM:SS");
         }
 
-        if (!validateEmployeeId(employeeId)) {
+        if (Boolean.FALSE.equals(validateEmployeeId(employeeId))) {
             throw new InvalidFormatException("Invalid employee Id " + employeeId);
         }
 
@@ -68,7 +68,7 @@ public class FileParserImpl implements FileParser {
     public boolean validateMeetingScheduleFormat(@Nonnull final String meetingScheduleFormat) throws InvalidFormatException {
         checkNull(meetingScheduleFormat, "meetingScheduleFormat");
 
-        if (!validateStringFormatParts(meetingScheduleFormat, FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS)) {
+        if (Boolean.FALSE.equals(validateStringFormatParts(meetingScheduleFormat, FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS))) {
             throw new InvalidFormatException("Invalid formatting. " +
                     "meeting start time, in the format [YYYY-MM-DD HH:MM Duration(hours)]" +
                     " should contain " + FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS + " parts");
@@ -81,21 +81,20 @@ public class FileParserImpl implements FileParser {
         final String timeFormat_HHMM = trimWhiteSpaceOfString(tokens[1]);
         final String duration = trimWhiteSpaceOfString(tokens[2]);
 
-        if (!validateDateFormat(dateFormat_YYYYMMDD)) {
+        if (Boolean.FALSE.equals(validateDateFormat(dateFormat_YYYYMMDD))) {
             throw new InvalidDateFormatException("Invalid date formatting for " + dateFormat_YYYYMMDD + " request submission time, in the format YYYY-MM-DD HH:MM");
         }
 
-        if (!validateTimeFormatHHMM(timeFormat_HHMM)) {
+        if (Boolean.FALSE.equals(validateTimeFormatHHMM(timeFormat_HHMM))) {
             throw new InvalidDateFormatException("Invalid date formatting for " + timeFormat_HHMM + " request submission time, in the format YYYY-MM-DD HH:MM");
         }
 
-        if (!validateMeetingDuration(duration)) {
+        if (Boolean.FALSE.equals(validateMeetingDuration(duration))) {
             throw new InvalidFormatException("Invalid meeting duration " + duration);
         }
 
         return true;
     }
-
 
     /**
      * Helper methods
@@ -169,7 +168,7 @@ public class FileParserImpl implements FileParser {
     private boolean validateMeetingDuration(@Nonnull final String meetingDuration) throws InvalidFormatException {
         checkNull(meetingDuration, "meetingDuration");
 
-        if (!validateStringPattern(FileParserParams.MEETING_DURATION_FORMAT, meetingDuration)) {
+        if (Boolean.FALSE.equals(validateStringPattern(FileParserParams.MEETING_DURATION_FORMAT, meetingDuration))) {
             if (meetingDuration.matches("[0-9]+")) {
                 final int duration = Integer.parseInt(meetingDuration);
                 throw new InvalidFormatException("Invalid meeting duration, should be greater than 0");
@@ -190,7 +189,7 @@ public class FileParserImpl implements FileParser {
     private boolean validateDateFormat(@Nonnull final String dateFormat) throws InvalidFormatException {
         checkNull(dateFormat, "dateFormat");
 
-        if (!dateFormat.matches(FileParserParams.DATE_FORMAT))
+        if (Boolean.FALSE.equals(dateFormat.matches(FileParserParams.DATE_FORMAT)))
             return false;
         try {
             dateFormatThreadLocal.get().parse(dateFormat);
@@ -226,7 +225,7 @@ public class FileParserImpl implements FileParser {
         checkNull(stringFormat, "stringFormat");
         checkNull(expectedNumberOfParts, "expectedNumberOfParts");
 
-        StringTokenizer stringTokenizer = new StringTokenizer(stringFormat);
+        final StringTokenizer stringTokenizer = new StringTokenizer(stringFormat);
         final int actualNumberOfParts = stringTokenizer.countTokens();
 
         if (actualNumberOfParts == expectedNumberOfParts) {

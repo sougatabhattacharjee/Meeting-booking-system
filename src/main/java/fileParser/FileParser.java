@@ -41,5 +41,4 @@ public interface FileParser {
     @Nonnull
     boolean validateMeetingScheduleFormat(@Nonnull String meetingScheduleFormat) throws InvalidFormatException;
 
-
 }
