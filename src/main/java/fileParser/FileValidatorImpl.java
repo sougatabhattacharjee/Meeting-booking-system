@@ -3,15 +3,11 @@ package fileParser;
 import errors.InvalidFormatException;
 
 import javax.annotation.Nonnull;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static util.Helpers.isListEmpty;
+import static util.Helpers.getFileAsList;
 import static util.Validator.checkNull;
 
 /**
@@ -23,7 +19,7 @@ public class FileValidatorImpl implements FileValidator {
     public boolean validateFileFormat(@Nonnull final File file) throws IOException, InvalidFormatException {
         checkNull(file, "file");
 
-        final List<String> fileInputs = fileParse(file);
+        final List<String> fileInputs = getFileAsList(file);
         if (Boolean.FALSE.equals(checkLengthOfInputs(fileInputs)))
             throw new InvalidFormatException("Inputs should be atleast 3 lines and then followed by every 2 lines");
 
@@ -56,21 +52,6 @@ public class FileValidatorImpl implements FileValidator {
     /**
      * Helpers method
      */
-    @Nonnull
-    private List<String> fileParse(@Nonnull final File file) throws IOException {
-        checkNull(file, "file");
-
-        final List<String> inputs = new ArrayList<String>();
-
-        final BufferedReader reader = new BufferedReader(new FileReader(file.getPath()));
-        String line = "";
-        while ((line = reader.readLine()) != null) {
-            inputs.add(line);
-        }
-
-        return isListEmpty(inputs) ? Collections.<String>emptyList() : inputs;
-    }
-
     @Nonnull
     private boolean checkLengthOfInputs(@Nonnull final List<String> fileInputs) {
         checkNull(fileInputs, "fileInputs");
