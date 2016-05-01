@@ -79,7 +79,7 @@ public class FileParserImpl implements FileParser {
         if (Boolean.FALSE.equals(validateStringFormatParts(meetingScheduleFormat,
                 FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS))) {
             logAndThrow(new InvalidFormatException("Invalid formatting. " +
-                    "meeting start time, in the format [YYYY-MM-DD HH:MM Duration(hours)]" +
+                    "meeting meetingStartTime time, in the format [YYYY-MM-DD HH:MM Duration(hours)]" +
                     " should contain " + FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS + " parts"), LOGGER);
         }
 

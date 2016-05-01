@@ -73,8 +73,8 @@ public class FileParserParams {
     public static final int BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS = 3;
 
     /**
-     * Each meeting start time is in the following format
-     * [meeting start time, in the format YYYY-MM-DD HH:MM] [ARCH:meeting duration in hours]
+     * Each meeting meetingStartTime time is in the following format
+     * [meeting meetingStartTime time, in the format YYYY-MM-DD HH:MM] [ARCH:meeting duration in hours]
      * It has 3 subsections, an example is "2015-08-21 09:00 2"
      */
     public static final int MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS = 3;

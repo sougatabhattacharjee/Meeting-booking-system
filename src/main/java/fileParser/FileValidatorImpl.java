@@ -33,7 +33,7 @@ public class FileValidatorImpl implements FileValidator {
         if (Boolean.FALSE.equals(fileParser.validateCompanyOfficeHoursFormat(fileInputs.get(0))))
             return false;
 
-        // start from the 2nd line
+        // meetingStartTime from the 2nd line
         for (int index = 1; index < fileInputs.size(); index++) {
 
             // validate every 2nd line which contains individual booking requests
@@ -42,7 +42,7 @@ public class FileValidatorImpl implements FileValidator {
                     return false;
             }
 
-            // validate every 3rd line which contains meeting start time
+            // validate every 3rd line which contains meeting meetingStartTime time
             if (index % 2 == 0) {
                 if (Boolean.FALSE.equals(fileParser.validateMeetingScheduleFormat(fileInputs.get(index))))
                     return false;

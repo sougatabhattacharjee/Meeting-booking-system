@@ -9,7 +9,7 @@ import static util.Validator.checkNull;
  */
 
 /**
- * Class contains all the details of the office hours start and end time.
+ * Class contains all the details of the office hours meetingStartTime and meetingEndTime time.
  */
 public class OfficeHour {
 

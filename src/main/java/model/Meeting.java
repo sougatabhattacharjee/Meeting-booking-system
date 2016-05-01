@@ -15,7 +15,7 @@ import static util.Validator.checkNull;
  */
 
 /**
- * Class contains all the details of meeting start time details.
+ * Class contains all the details of meeting meetingStartTime time details.
  */
 public class Meeting {
 

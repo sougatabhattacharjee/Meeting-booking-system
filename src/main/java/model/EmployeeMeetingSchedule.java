@@ -15,7 +15,7 @@ import static util.Validator.checkNull;
 
 /**
  * Class contains all the details of meeting scheduling system. It contains the office hours, employee id,
- * submission time details and meeting start time details.
+ * submission time details and meeting meetingStartTime time details.
  */
 public class EmployeeMeetingSchedule {
 

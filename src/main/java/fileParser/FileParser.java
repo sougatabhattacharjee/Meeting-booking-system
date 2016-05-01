@@ -31,11 +31,11 @@ public interface FileParser {
     boolean validateBookingRequestFormat(@Nonnull String bookingRequestFormat) throws InvalidFormatException;
 
     /**
-     * Check the booking request is in the following format, [meeting start time, in the format YYYY-MM-DD HH:MM]
+     * Check the booking request is in the following format, [meeting meetingStartTime time, in the format YYYY-MM-DD HH:MM]
      * [ARCH:meeting duration in hours]
      * An example format is 2015-08-21 09:00 2. Return true if it validates the format otherwise false.
      *
-     * @param meetingScheduleFormat meeting start time to be validated
+     * @param meetingScheduleFormat meeting meetingStartTime time to be validated
      * @return boolean true | false
      */
     @Nonnull
