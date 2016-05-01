@@ -7,11 +7,15 @@ import static util.Validator.checkNull;
 /**
  * Created by Sougata on 5/1/2016.
  */
+
+/**
+ * Class contains all the details of the office hours start and end time.
+ */
 public class OfficeHour {
 
-    protected String officeStartTime;
+    private String officeStartTime;
 
-    protected String officeEndTime;
+    private String officeEndTime;
 
     public OfficeHour(final String officeStartTime, final String officeEndTime) {
         this.setOfficeStartTime(officeStartTime);
@@ -20,10 +24,10 @@ public class OfficeHour {
 
     @Nonnull
     public String getOfficeStartTime() {
-        return officeStartTime;
+        return this.officeStartTime;
     }
 
-    public void setOfficeStartTime(@Nonnull final String officeStartTime) {
+    private void setOfficeStartTime(@Nonnull final String officeStartTime) {
         checkNull(officeStartTime, "officeStartTime");
 
         this.officeStartTime = officeStartTime;
@@ -31,10 +35,10 @@ public class OfficeHour {
 
     @Nonnull
     public String getOfficeEndTime() {
-        return officeEndTime;
+        return this.officeEndTime;
     }
 
-    public void setOfficeEndTime(@Nonnull final String officeEndTime) {
+    private void setOfficeEndTime(@Nonnull final String officeEndTime) {
         checkNull(officeEndTime, "officeEndTime");
 
         this.officeEndTime = officeEndTime;

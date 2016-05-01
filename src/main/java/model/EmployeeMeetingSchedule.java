@@ -12,15 +12,20 @@ import static util.Validator.checkNull;
 /**
  * Created by Sougata on 4/30/2016.
  */
+
+/**
+ * Class contains all the details of meeting scheduling system. It contains the office hours, employee id,
+ * submission time details and meeting start time details.
+ */
 public class EmployeeMeetingSchedule {
 
-    protected OfficeHour officeHour;
+    private OfficeHour officeHour;
 
-    protected String employeeId;
+    private String employeeId;
 
-    protected LocalDateTime submissionTime;
+    private LocalDateTime submissionTime;
 
-    protected Meeting meeting;
+    private Meeting meeting;
 
     public EmployeeMeetingSchedule() {
     }
@@ -32,6 +37,7 @@ public class EmployeeMeetingSchedule {
 
     public void setOfficeHour(@Nonnull final OfficeHour officeHour) {
         checkNull(officeHour, "officeHour");
+
         this.officeHour = officeHour;
     }
 
@@ -42,6 +48,7 @@ public class EmployeeMeetingSchedule {
 
     public void setEmployeeId(@Nonnull final String employeeId) {
         checkNull(employeeId, "employeeId");
+
         this.employeeId = employeeId;
     }
 
@@ -52,7 +59,9 @@ public class EmployeeMeetingSchedule {
 
     public void setSubmissionTime(@Nonnull final String submissionTime) {
         checkNull(submissionTime, "submissionTime");
-        this.submissionTime = convertStringToLocalDateTimeFormat(submissionTime, FileParserParams.SIMPLE_DATE_FORMAT_HHMMSS);
+
+        this.submissionTime = convertStringToLocalDateTimeFormat
+                (submissionTime, FileParserParams.SIMPLE_DATE_FORMAT_HHMMSS);
     }
 
     @Nonnull
@@ -62,6 +71,7 @@ public class EmployeeMeetingSchedule {
 
     public void setMeeting(@Nonnull final Meeting meeting) {
         checkNull(meeting, "meeting");
+
         this.meeting = meeting;
     }
 

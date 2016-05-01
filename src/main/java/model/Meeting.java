@@ -3,27 +3,29 @@ package model;
 import fileParser.FileParserParams;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import javax.annotation.Nonnull;
 
-import static util.Helpers.convertStringToLocalDateTimeFormat;
 import static util.Helpers.convertStringToLocalDate;
+import static util.Helpers.convertStringToLocalDateTimeFormat;
 import static util.Validator.checkNull;
 
 /**
  * Created by Sougata on 5/1/2016.
  */
+
+/**
+ * Class contains all the details of meeting start time details.
+ */
 public class Meeting {
 
-    protected LocalDate meetingStartDate;
+    private LocalDate meetingStartDate;
 
-    protected LocalDateTime meetingStartTime;
+    private LocalDateTime meetingStartTime;
 
-    protected LocalDateTime meetingEndTime;
+    private LocalDateTime meetingEndTime;
 
-    protected int meetingDuration;
+    private int meetingDuration;
 
     public Meeting(final String meetingStartDate, final String meetingStartTime, final String meetingDuration) {
         this.setMeetingStartDate(convertStringToLocalDate(meetingStartDate, FileParserParams.SIMPLE_DATE_FORMAT));
@@ -37,30 +39,32 @@ public class Meeting {
 
     @Nonnull
     public LocalDate getMeetingStartDate() {
-        return meetingStartDate;
+        return this.meetingStartDate;
     }
 
-    public void setMeetingStartDate(@Nonnull final LocalDate meetingStartDate) {
+    private void setMeetingStartDate(@Nonnull final LocalDate meetingStartDate) {
         checkNull(meetingStartDate, "meetingStartDate");
+
         this.meetingStartDate = meetingStartDate;
     }
 
     @Nonnull
     public LocalDateTime getMeetingStartTime() {
-        return meetingStartTime;
+        return this.meetingStartTime;
     }
 
-    public void setMeetingStartTime(@Nonnull final LocalDateTime meetingStartTime) {
+    private void setMeetingStartTime(@Nonnull final LocalDateTime meetingStartTime) {
         checkNull(meetingStartTime, "meetingStartTime");
+
         this.meetingStartTime = meetingStartTime;
     }
 
     @Nonnull
     public LocalDateTime getMeetingEndTime() {
-        return meetingEndTime;
+        return this.meetingEndTime;
     }
 
-    public void setMeetingEndTime(@Nonnull final LocalDateTime meetingEndTime) {
+    private void setMeetingEndTime(@Nonnull final LocalDateTime meetingEndTime) {
         checkNull(meetingEndTime, "meetingEndTime");
 
         this.meetingEndTime = meetingEndTime;
@@ -68,10 +72,10 @@ public class Meeting {
 
     @Nonnull
     public int getMeetingDuration() {
-        return meetingDuration;
+        return this.meetingDuration;
     }
 
-    public void setMeetingDuration(@Nonnull final int meetingDuration) {
+    private void setMeetingDuration(@Nonnull final int meetingDuration) {
         checkNull(meetingDuration, "meetingDuration");
 
         this.meetingDuration = meetingDuration;
@@ -88,7 +92,6 @@ public class Meeting {
         if (!meetingStartDate.equals(meeting.meetingStartDate)) return false;
         if (!meetingStartTime.equals(meeting.meetingStartTime)) return false;
         return meetingEndTime.equals(meeting.meetingEndTime);
-
     }
 
     @Override

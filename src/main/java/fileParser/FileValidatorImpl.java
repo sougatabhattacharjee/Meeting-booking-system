@@ -17,7 +17,7 @@ import static util.Validator.checkNull;
  */
 public class FileValidatorImpl implements FileValidator {
 
-    final static Logger LOGGER = Logger.getLogger(FileValidatorImpl.class);
+    private final static Logger LOGGER = Logger.getLogger(FileValidatorImpl.class);
 
     @Nonnull
     public boolean validateFileFormat(@Nonnull final File file) throws IOException, InvalidFormatException {
@@ -55,12 +55,18 @@ public class FileValidatorImpl implements FileValidator {
     /**
      * Helpers method
      */
+
+    /**
+     * Check the length of input file. The file should contains atleast 3 lines and the number of lines should be odd number.
+     * If it validates then return true otherwise false.
+     *
+     * @param fileInputs File lines to be checked
+     * @return true | false
+     */
     @Nonnull
     private boolean checkLengthOfInputs(@Nonnull final List<String> fileInputs) {
         checkNull(fileInputs, "fileInputs");
 
-        if (fileInputs.size() > 3 && fileInputs.size() % 2 != 0)
-            return true;
-        return false;
+        return fileInputs.size() > 3 && fileInputs.size() % 2 != 0;
     }
 }

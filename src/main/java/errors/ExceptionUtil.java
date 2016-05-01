@@ -11,6 +11,12 @@ import static util.Validator.checkNull;
  */
 public class ExceptionUtil {
 
+    /**
+     * The method is responsible for log and throw a given exception.
+     *
+     * @param exception the given exception to be thrown and logged
+     * @param logger    logger of the class
+     */
     public static void logAndThrow(@Nonnull final Exception exception, @Nonnull final Logger logger) {
         checkNull(exception, "exception");
         checkNull(logger, "logger");
@@ -18,8 +24,8 @@ public class ExceptionUtil {
         logger.error(exception);
         try {
             throw exception;
-        } catch (Exception e1) {
-            logger.error(e1.getMessage());
+        } catch (final Exception ex) {
+            logger.error(ex.getMessage());
         }
     }
 }

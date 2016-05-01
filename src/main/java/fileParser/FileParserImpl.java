@@ -1,10 +1,8 @@
 package fileParser;
 
-import errors.ExceptionUtil;
 import errors.InvalidDateFormatException;
 import errors.InvalidFormatException;
 import org.apache.log4j.Logger;
-import util.Validator;
 
 import javax.annotation.Nonnull;
 import java.text.ParseException;
@@ -22,7 +20,7 @@ import static util.Validator.checkNull;
  */
 public class FileParserImpl implements FileParser {
 
-    final static Logger LOGGER = Logger.getLogger(FileParserImpl.class);
+    private final static Logger LOGGER = Logger.getLogger(FileParserImpl.class);
 
     @Nonnull
     public boolean validateCompanyOfficeHoursFormat(@Nonnull final String time) throws InvalidFormatException {
@@ -247,11 +245,7 @@ public class FileParserImpl implements FileParser {
         final StringTokenizer stringTokenizer = new StringTokenizer(stringFormat);
         final int actualNumberOfParts = stringTokenizer.countTokens();
 
-        if (actualNumberOfParts == expectedNumberOfParts) {
-            return true;
-        }
-
-        return false;
+        return actualNumberOfParts == expectedNumberOfParts;
     }
 
 }

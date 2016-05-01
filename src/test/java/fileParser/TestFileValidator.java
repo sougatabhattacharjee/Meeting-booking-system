@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import static errors.ExceptionUtil.logAndThrow;
 import static util.Validator.checkNull;
 
 /**
@@ -16,7 +17,7 @@ import static util.Validator.checkNull;
  */
 public class TestFileValidator {
 
-    final static String INPUT_FILE_PATH = "fileValidator/";
+    private final static String INPUT_FILE_PATH = "fileValidator/";
 
     @Test
     public void testInputFileValidation_WhenValidInputs() throws IOException, InvalidFormatException {
@@ -38,6 +39,14 @@ public class TestFileValidator {
 
     /**
      * Helpers method
+     */
+
+    /**
+     * Create a File object from a given file name
+     *
+     * @param fileName the given filename to be converted
+     * @return the File obejct
+     * @throws IOException
      */
     @Nonnull
     private File getFile(@Nonnull final String fileName) throws IOException {

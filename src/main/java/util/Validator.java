@@ -9,8 +9,14 @@ import static errors.ExceptionUtil.logAndThrow;
  */
 public class Validator {
 
-    final static Logger LOGGER = Logger.getLogger(Validator.class);
+    private final static Logger LOGGER = Logger.getLogger(Validator.class);
 
+    /**
+     * Check an object is null or not. If null then throw a NullPointerException exception.
+     *
+     * @param obj          object to be checked.
+     * @param defaultValue defaultvalue of object name
+     */
     public static <T> T checkNull(T obj, T defaultValue) {
         if (null == obj) {
             logAndThrow(new NullPointerException(defaultValue + " cannot be null here."), LOGGER);

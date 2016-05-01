@@ -6,11 +6,11 @@ package errors;
 public class InvalidFileFormatException extends Exception {
 
     //Parameterless Constructor
-    public InvalidFileFormatException() {}
+    public InvalidFileFormatException() {
+    }
 
     //Constructor that accepts a message
-    public InvalidFileFormatException(final String message)
-    {
+    public InvalidFileFormatException(final String message) {
         super(message);
     }
 }

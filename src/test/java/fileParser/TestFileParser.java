@@ -18,7 +18,7 @@ import static util.Validator.checkNull;
  */
 public class TestFileParser {
 
-    final static String INPUT_FILE_PATH = "fileParser/";
+    private final static String INPUT_FILE_PATH = "fileParser/";
 
     @Test
     public void testCompanyOfficeHoursFormat_WhenInputIsValid() throws IOException, InvalidFormatException {

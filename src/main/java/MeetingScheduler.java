@@ -6,6 +6,7 @@ import model.EmployeeMeetingSchedule;
 import model.Meeting;
 import model.OfficeHour;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -19,9 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static errors.ExceptionUtil.logAndThrow;
-import static util.Helpers.getFileAsList;
-import static util.Helpers.getTimeFormat;
-import static util.Helpers.trimWhiteSpaceOfString;
+import static util.Helpers.*;
 import static util.Validator.checkNull;
 
 /**
@@ -29,10 +28,12 @@ import static util.Validator.checkNull;
  */
 public class MeetingScheduler {
 
-    final static Logger LOGGER = Logger.getLogger(MeetingScheduler.class);
+    private final static Logger LOGGER = Logger.getLogger(MeetingScheduler.class);
 
     public void process(@Nonnull final String fileName) throws IOException {
         checkNull(fileName, "fileName");
+        LOGGER.info("Input File Validation started.");
+        final Long startTime = DateTimeUtils.currentTimeMillis();
 
         final File inputFile = getFile(fileName);
         final FileValidator fileValidator = new FileValidatorImpl();
@@ -47,8 +48,10 @@ public class MeetingScheduler {
 
         final List<EmployeeMeetingSchedule> inputFileContentModel = convertListToModel(inputFileContent);
 
-        System.out.println("inputFileContentModel.size() = " + inputFileContentModel.size());
-        System.out.println("inputFileContentModel.size() = " + inputFileContentModel.get(0).getEmployeeId());
+        final Long endTime = DateTimeUtils.currentTimeMillis();
+        final Long totalTime = endTime - startTime;
+
+        LOGGER.info("Input File Validation Completed. It takes " + totalTime + "ms.");
     }
 
     @Nonnull
@@ -91,6 +94,14 @@ public class MeetingScheduler {
         return employeeMeetingSchedules;
     }
 
+    /**
+     * Validate the meeting start and end time.
+     * Return false if meeting start time is before the office start time
+     * and meeting end time is before the office end time.
+     *
+     * @param employeeMeetingSchedule meeting schedule timings including start and end time
+     * @return true | false
+     */
     private boolean validateMeetingTimeSchedule(@Nonnull final EmployeeMeetingSchedule employeeMeetingSchedule) {
         checkNull(employeeMeetingSchedule, "employeeMeetingSchedule");
 
@@ -107,9 +118,17 @@ public class MeetingScheduler {
         final LocalDateTime officeEndTime = LocalDateTime.parse(officeEnd, dateTimeFormatter);
 
         return (officeStartTime.isEqual(meetingStartTime) || officeStartTime.isBefore(meetingStartTime))
-                && (officeEndTime.isEqual(meetingEndTime) || officeEndTime.isAfter(meetingEndTime));
+                && (officeEndTime.isAfter(meetingStartTime))
+                && (officeEndTime.isEqual(meetingEndTime) || officeEndTime.isAfter(meetingEndTime))
+                && (officeStartTime.isBefore(meetingEndTime));
     }
 
+    /**
+     * sort the input list by the submission time.
+     *
+     * @param employeeMeetingSchedules list to be sorted
+     * @return sorted list
+     */
     @Nonnull
     private List<EmployeeMeetingSchedule> getSortedMeetingSchedulesBySubmissionTime(
             @Nonnull final List<EmployeeMeetingSchedule> employeeMeetingSchedules) {
@@ -120,6 +139,12 @@ public class MeetingScheduler {
         return employeeMeetingSchedules;
     }
 
+    /**
+     * build the OfficeHour model from the given input.
+     *
+     * @param input input string to be converted to the OfficeHour object
+     * @return OfficeHour
+     */
     @Nonnull
     private OfficeHour getOfficeHour(@Nonnull final String input) {
         checkNull(input, "input");
@@ -131,6 +156,12 @@ public class MeetingScheduler {
         return new OfficeHour(officeStartTime, officeEndTime);
     }
 
+    /**
+     * build the Meeting model from the given input.
+     *
+     * @param input input string to be converted to the Meeting object
+     * @return Meeting
+     */
     @Nonnull
     private Meeting getMeeting(@Nonnull final String input) {
         checkNull(input, "input");
@@ -143,6 +174,11 @@ public class MeetingScheduler {
         return new Meeting(meetingStartDate, getTimeFormat(meetingStartDate, meetingStartTime), meetingDuration);
     }
 
+    /**
+     * build the EmployeeMeetingSchedule model from the given input.
+     *
+     * @param input input string to be converted to the EmployeeMeetingSchedule object
+     */
     private void getEmployeeMeetingSchedule(@Nonnull final String input,
                                             @Nonnull final EmployeeMeetingSchedule employeeMeetingSchedule) {
         checkNull(input, "input");
@@ -154,10 +190,21 @@ public class MeetingScheduler {
         final String submissionTime = trimWhiteSpaceOfString(meetingString[1]);
         final String employeeId = trimWhiteSpaceOfString(meetingString[2]);
 
-        employeeMeetingSchedule.setSubmissionTime(getTimeFormat(submissionDate, submissionTime));
+        if (getTimeFormat(submissionDate, submissionTime) != null) {
+            employeeMeetingSchedule.setSubmissionTime(getTimeFormat(submissionDate, submissionTime));
+        } else
+            logAndThrow(new NullPointerException("getTimeFormat() is null"), LOGGER);
+
         employeeMeetingSchedule.setEmployeeId(employeeId);
     }
 
+    /**
+     * Create a File object from a given file name
+     *
+     * @param fileName the given filename to be converted
+     * @return the File obejct
+     * @throws IOException
+     */
     @Nonnull
     private File getFile(@Nonnull final String fileName) throws IOException {
         checkNull(fileName, "fileName");
