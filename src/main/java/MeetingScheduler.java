@@ -5,6 +5,7 @@ import fileParser.FileValidatorImpl;
 import model.EmployeeMeetingSchedule;
 import model.Meeting;
 import model.OfficeHour;
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -17,7 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static errors.ExceptionUtil.logAndThrow;
 import static util.Helpers.getFileAsList;
+import static util.Helpers.getTimeFormat;
 import static util.Helpers.trimWhiteSpaceOfString;
 import static util.Validator.checkNull;
 
@@ -25,6 +28,8 @@ import static util.Validator.checkNull;
  * Created by Sougata on 5/1/2016.
  */
 public class MeetingScheduler {
+
+    final static Logger LOGGER = Logger.getLogger(MeetingScheduler.class);
 
     public void process(@Nonnull final String fileName) throws IOException {
         checkNull(fileName, "fileName");
@@ -35,7 +40,7 @@ public class MeetingScheduler {
         try {
             fileValidator.validateFileFormat(inputFile);
         } catch (final InvalidFormatException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         final List<String> inputFileContent = getFileAsList(inputFile);
@@ -86,32 +91,32 @@ public class MeetingScheduler {
         return employeeMeetingSchedules;
     }
 
-    @Nonnull
     private boolean validateMeetingTimeSchedule(@Nonnull final EmployeeMeetingSchedule employeeMeetingSchedule) {
         checkNull(employeeMeetingSchedule, "employeeMeetingSchedule");
 
         final LocalDateTime meetingStartTime = employeeMeetingSchedule.getMeeting().getMeetingStartTime();
         final LocalDateTime meetingEndTime = employeeMeetingSchedule.getMeeting().getMeetingEndTime();
 
-        final String officeStart = employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString() + " " + employeeMeetingSchedule.getOfficeHour().getOfficeStartTime();
-        final String officeEnd = employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString() + " " + employeeMeetingSchedule.getOfficeHour().getOfficeEndTime();
+        final String officeStart = getTimeFormat(employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString(),
+                employeeMeetingSchedule.getOfficeHour().getOfficeStartTime());
+        final String officeEnd = getTimeFormat(employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString(),
+                employeeMeetingSchedule.getOfficeHour().getOfficeEndTime());
 
         final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HHmm");
         final LocalDateTime officeStartTime = LocalDateTime.parse(officeStart, dateTimeFormatter);
         final LocalDateTime officeEndTime = LocalDateTime.parse(officeEnd, dateTimeFormatter);
 
-        if ((officeStartTime.isEqual(meetingStartTime) || officeStartTime.isBefore(meetingStartTime))
-                && (officeEndTime.isEqual(meetingEndTime) || officeEndTime.isAfter(meetingEndTime)))
-            return true;
-
-        return false;
+        return (officeStartTime.isEqual(meetingStartTime) || officeStartTime.isBefore(meetingStartTime))
+                && (officeEndTime.isEqual(meetingEndTime) || officeEndTime.isAfter(meetingEndTime));
     }
 
     @Nonnull
-    private List<EmployeeMeetingSchedule> getSortedMeetingSchedulesBySubmissionTime(@Nonnull final List<EmployeeMeetingSchedule> employeeMeetingSchedules) {
+    private List<EmployeeMeetingSchedule> getSortedMeetingSchedulesBySubmissionTime(
+            @Nonnull final List<EmployeeMeetingSchedule> employeeMeetingSchedules) {
         checkNull(employeeMeetingSchedules, "employeeMeetingSchedules");
 
-        Collections.sort(employeeMeetingSchedules, (submissionTime1, submissionTime2) -> submissionTime1.getSubmissionTime().compareTo(submissionTime2.getSubmissionTime()));
+        Collections.sort(employeeMeetingSchedules, (submissionTime1, submissionTime2)
+                -> submissionTime1.getSubmissionTime().compareTo(submissionTime2.getSubmissionTime()));
         return employeeMeetingSchedules;
     }
 
@@ -123,9 +128,7 @@ public class MeetingScheduler {
         final String officeStartTime = trimWhiteSpaceOfString(officeHourString[0]);
         final String officeEndTime = trimWhiteSpaceOfString(officeHourString[1]);
 
-        final OfficeHour officeHour = new OfficeHour(officeStartTime, officeEndTime);
-
-        return officeHour;
+        return new OfficeHour(officeStartTime, officeEndTime);
     }
 
     @Nonnull
@@ -137,13 +140,11 @@ public class MeetingScheduler {
         final String meetingStartTime = trimWhiteSpaceOfString(meetingString[1]);
         final String meetingDuration = trimWhiteSpaceOfString(meetingString[2]);
 
-        final Meeting meeting = new Meeting(meetingStartDate, meetingStartDate + " " + meetingStartTime, meetingDuration);
-
-        return meeting;
+        return new Meeting(meetingStartDate, getTimeFormat(meetingStartDate, meetingStartTime), meetingDuration);
     }
 
-    @Nonnull
-    private void getEmployeeMeetingSchedule(@Nonnull final String input, @Nonnull final EmployeeMeetingSchedule employeeMeetingSchedule) {
+    private void getEmployeeMeetingSchedule(@Nonnull final String input,
+                                            @Nonnull final EmployeeMeetingSchedule employeeMeetingSchedule) {
         checkNull(input, "input");
         checkNull(employeeMeetingSchedule, "employeeMeetingSchedule");
 
@@ -153,7 +154,7 @@ public class MeetingScheduler {
         final String submissionTime = trimWhiteSpaceOfString(meetingString[1]);
         final String employeeId = trimWhiteSpaceOfString(meetingString[2]);
 
-        employeeMeetingSchedule.setSubmissionTime(submissionDate + " " + submissionTime);
+        employeeMeetingSchedule.setSubmissionTime(getTimeFormat(submissionDate, submissionTime));
         employeeMeetingSchedule.setEmployeeId(employeeId);
     }
 
@@ -167,7 +168,7 @@ public class MeetingScheduler {
         if (classLoader.getResource(fileName) != null)
             file = new File(classLoader.getResource(fileName).getFile());
         else
-            throw new FileNotFoundException(fileName + " file not found.");
+            logAndThrow(new FileNotFoundException(fileName + " file not found."), LOGGER);
 
         return file;
     }

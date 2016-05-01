@@ -1,12 +1,14 @@
 package fileParser;
 
 import errors.InvalidFormatException;
+import org.apache.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static errors.ExceptionUtil.logAndThrow;
 import static util.Helpers.getFileAsList;
 import static util.Validator.checkNull;
 
@@ -15,13 +17,15 @@ import static util.Validator.checkNull;
  */
 public class FileValidatorImpl implements FileValidator {
 
+    final static Logger LOGGER = Logger.getLogger(FileValidatorImpl.class);
+
     @Nonnull
     public boolean validateFileFormat(@Nonnull final File file) throws IOException, InvalidFormatException {
         checkNull(file, "file");
 
         final List<String> fileInputs = getFileAsList(file);
         if (Boolean.FALSE.equals(checkLengthOfInputs(fileInputs)))
-            throw new InvalidFormatException("Inputs should be atleast 3 lines and then followed by every 2 lines");
+            logAndThrow(new InvalidFormatException("Inputs should be atleast 3 lines and then followed by every 2 lines"), LOGGER);
 
         final FileParser fileParser = new FileParserImpl();
 
@@ -47,7 +51,6 @@ public class FileValidatorImpl implements FileValidator {
 
         return true;
     }
-
 
     /**
      * Helpers method

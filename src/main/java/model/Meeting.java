@@ -1,5 +1,6 @@
 package model;
 
+import fileParser.FileParserParams;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -7,6 +8,8 @@ import org.joda.time.format.DateTimeFormatter;
 
 import javax.annotation.Nonnull;
 
+import static util.Helpers.convertStringToLocalDateTimeFormat;
+import static util.Helpers.convertStringToLocalDate;
 import static util.Validator.checkNull;
 
 /**
@@ -23,9 +26,12 @@ public class Meeting {
     protected int meetingDuration;
 
     public Meeting(final String meetingStartDate, final String meetingStartTime, final String meetingDuration) {
-        this.setMeetingStartDate(convertStringToLocalDate(meetingStartDate));
-        this.setMeetingStartTime(convertStringToLocalDateTimeFormat(meetingStartTime));
-        this.setMeetingEndTime(convertStringToLocalDateTimeFormat(meetingStartTime).plusHours(Integer.parseInt(meetingDuration)));
+        this.setMeetingStartDate(convertStringToLocalDate(meetingStartDate, FileParserParams.SIMPLE_DATE_FORMAT));
+        this.setMeetingStartTime(convertStringToLocalDateTimeFormat(meetingStartTime,
+                FileParserParams.SIMPLE_DATE_FORMAT_HHMM));
+        this.setMeetingEndTime(convertStringToLocalDateTimeFormat(meetingStartTime,
+                FileParserParams.SIMPLE_DATE_FORMAT_HHMM)
+                .plusHours(Integer.parseInt(meetingDuration)));
         this.setMeetingDuration(Integer.parseInt(meetingDuration));
     }
 
@@ -56,6 +62,7 @@ public class Meeting {
 
     public void setMeetingEndTime(@Nonnull final LocalDateTime meetingEndTime) {
         checkNull(meetingEndTime, "meetingEndTime");
+
         this.meetingEndTime = meetingEndTime;
     }
 
@@ -66,27 +73,8 @@ public class Meeting {
 
     public void setMeetingDuration(@Nonnull final int meetingDuration) {
         checkNull(meetingDuration, "meetingDuration");
+
         this.meetingDuration = meetingDuration;
-    }
-
-    @Nonnull
-    private LocalDateTime convertStringToLocalDateTimeFormat(@Nonnull final String time) {
-        checkNull(time, "time");
-
-        final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
-        final LocalDateTime localDateTime = LocalDateTime.parse(time, dateTimeFormatter);
-
-        return localDateTime;
-    }
-
-    @Nonnull
-    private LocalDate convertStringToLocalDate(@Nonnull final String time) {
-        checkNull(time, "time");
-
-        final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        final LocalDate localDate = LocalDate.parse(time, dateTimeFormatter);
-
-        return localDate;
     }
 
     @Override
@@ -94,7 +82,7 @@ public class Meeting {
         if (this == o) return true;
         if (!(o instanceof Meeting)) return false;
 
-        Meeting meeting = (Meeting) o;
+        final Meeting meeting = (Meeting) o;
 
         if (meetingDuration != meeting.meetingDuration) return false;
         if (!meetingStartDate.equals(meeting.meetingStartDate)) return false;

@@ -1,13 +1,12 @@
 package model;
 
 
-import org.joda.time.LocalDate;
+import fileParser.FileParserParams;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import javax.annotation.Nonnull;
 
+import static util.Helpers.convertStringToLocalDateTimeFormat;
 import static util.Validator.checkNull;
 
 /**
@@ -26,14 +25,9 @@ public class EmployeeMeetingSchedule {
     public EmployeeMeetingSchedule() {
     }
 
-    public EmployeeMeetingSchedule(String s, String employeeId) {
-//        this.setSubmissionTime(convertStringToLocalDateTimeFormat(s));
-        this.setEmployeeId(employeeId);
-    }
-
     @Nonnull
     public OfficeHour getOfficeHour() {
-        return officeHour;
+        return this.officeHour;
     }
 
     public void setOfficeHour(@Nonnull final OfficeHour officeHour) {
@@ -43,7 +37,7 @@ public class EmployeeMeetingSchedule {
 
     @Nonnull
     public String getEmployeeId() {
-        return employeeId;
+        return this.employeeId;
     }
 
     public void setEmployeeId(@Nonnull final String employeeId) {
@@ -53,32 +47,22 @@ public class EmployeeMeetingSchedule {
 
     @Nonnull
     public LocalDateTime getSubmissionTime() {
-        return submissionTime;
+        return this.submissionTime;
     }
 
     public void setSubmissionTime(@Nonnull final String submissionTime) {
         checkNull(submissionTime, "submissionTime");
-        this.submissionTime = convertStringToLocalDateTimeFormat(submissionTime);
+        this.submissionTime = convertStringToLocalDateTimeFormat(submissionTime, FileParserParams.SIMPLE_DATE_FORMAT_HHMMSS);
     }
 
     @Nonnull
     public Meeting getMeeting() {
-        return meeting;
+        return this.meeting;
     }
 
     public void setMeeting(@Nonnull final Meeting meeting) {
         checkNull(meeting, "meeting");
         this.meeting = meeting;
-    }
-
-    @Nonnull
-    private LocalDateTime convertStringToLocalDateTimeFormat(@Nonnull final String time) {
-        checkNull(time, "time");
-
-        final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        final LocalDateTime localDateTime = LocalDateTime.parse(time, dateTimeFormatter);
-
-        return localDateTime;
     }
 
     @Override

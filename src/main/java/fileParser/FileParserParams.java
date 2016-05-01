@@ -25,9 +25,19 @@ public class FileParserParams {
     public static final String DATE_FORMAT = "\\d{4}-[01]\\d-[0-3]\\d";
 
     /**
-     * Simple Date formatting in YYYY-MM-DD, an example is "2015-08-17"
+     * Simple Date formatting in yyyy-MM-dd, an example is "2015-08-17"
      */
     public static final String SIMPLE_DATE_FORMAT = "yyyy-MM-dd";
+
+    /**
+     * Simple Date formatting in yyyy-MM-dd HH:mm:ss, an example is "2015-08-17 10:17:06"
+     */
+    public static final String SIMPLE_DATE_FORMAT_HHMMSS = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * Simple Date formatting in yyyy-MM-dd HH:mm, an example is "2015-08-21 09:00"
+     */
+    public static final String SIMPLE_DATE_FORMAT_HHMM = "yyyy-MM-dd HH:mm";
 
     /**
      * time in the format HH:MM:SS, an example is "10:17:06"
@@ -56,18 +66,16 @@ public class FileParserParams {
     public static final int COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS = 2;
 
     /**
-     * Each booking request is in the following format. [request submission time, in the format YYYY-MM-DD HH:MM:SS] [ARCH:employee id]
+     * Each booking request is in the following format.
+     * [request submission time, in the format YYYY-MM-DD HH:MM:SS] [ARCH:employee id]
      * It has 3 subsections, an example is "2015-08-17 10:17:06 EMP001"
      */
     public static final int BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS = 3;
 
     /**
-     * Each meeting start time is in the following format [meeting start time, in the format YYYY-MM-DD HH:MM] [ARCH:meeting duration in hours]
+     * Each meeting start time is in the following format
+     * [meeting start time, in the format YYYY-MM-DD HH:MM] [ARCH:meeting duration in hours]
      * It has 3 subsections, an example is "2015-08-21 09:00 2"
      */
     public static final int MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS = 3;
-
-    public static final String bookingRequestTimeFormat = "";
-
-    public static final String meetingStartTimeFormat = "";
 }
