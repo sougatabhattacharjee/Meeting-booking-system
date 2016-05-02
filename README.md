@@ -68,7 +68,8 @@ Go to the project directory and open console or terminal.
 
 ## Run
 After building the project successfully, type <br />
-``java -cp target/MeetingBooking-1.0-SNAPSHOT.jar com.mls.booking.Main``
+``java -cp target/MeetingBooking-1.0-SNAPSHOT.jar com.mls.booking.Main``  <br />
+ Then an input text file name should be provided. Only text files with (.txt) extensions are allowed.
 
 ## TODO
 * Dockerized the whole project or deploy to Heroku

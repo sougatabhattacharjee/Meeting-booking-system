@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="6" failures="0" name="com.mls.booking.fileParser.TestFileParser" time="0.108" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="com.mls.booking.fileParser.TestFileParser" time="0.393" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_77\jre\bin"/>
@@ -62,10 +62,11 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testMeetingScheduleFormat_WhenInputIsNotValid" time="0.093"/>
-  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testCompanyOfficeHoursFormat_WhenInputIsNotValid" time="0"/>
-  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testBookingRequestFormat_WhenInputIsNotValid" time="0.015"/>
-  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testMeetingScheduleFormat_WhenInputIsValid" time="0"/>
+  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testMeetingScheduleIntervalFormatOverlapping" time="0.373"/>
+  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testMeetingScheduleFormat_WhenInputIsNotValid" time="0.001"/>
+  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testCompanyOfficeHoursFormat_WhenInputIsNotValid" time="0.001"/>
+  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testBookingRequestFormat_WhenInputIsNotValid" time="0.012"/>
+  <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testMeetingScheduleFormat_WhenInputIsValid" time="0.006"/>
   <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testCompanyOfficeHoursFormat_WhenInputIsValid" time="0"/>
   <testcase classname="com.mls.booking.fileParser.TestFileParser" name="testBookingRequestFormat_WhenInputIsValid" time="0"/>
 </testsuite>
