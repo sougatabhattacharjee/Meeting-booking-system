@@ -5,7 +5,6 @@ com\mls\booking\errors\InvalidFileFormatException.class
 com\mls\booking\meetingSchedule\ScheduleIntervalNode.class
 com\mls\booking\errors\InvalidFormatException.class
 com\mls\booking\model\OfficeHour.class
-com\mls\booking\errors\ExceptionUtil.class
 com\mls\booking\fileParser\FileValidatorImpl.class
 com\mls\booking\util\Validator.class
 com\mls\booking\meetingSchedule\MeetingScheduleInterval.class

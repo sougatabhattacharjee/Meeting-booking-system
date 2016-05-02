@@ -2,8 +2,6 @@ package com.mls.booking.util;
 
 import org.apache.log4j.Logger;
 
-import static com.mls.booking.errors.ExceptionUtil.logAndThrow;
-
 /**
  * Created by Sougata on 4/30/2016.
  */
@@ -19,7 +17,8 @@ public class Validator {
      */
     public static <T> T checkNull(T obj, T defaultValue) {
         if (null == obj) {
-            logAndThrow(new NullPointerException(defaultValue + " cannot be null here."), LOGGER);
+            LOGGER.error(defaultValue + " cannot be null here.");
+            throw new NullPointerException(defaultValue + " cannot be null here.");
         }
         return obj;
     }

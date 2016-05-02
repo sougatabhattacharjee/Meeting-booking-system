@@ -8,12 +8,14 @@ import org.joda.time.format.DateTimeFormatter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.mls.booking.errors.ExceptionUtil.logAndThrow;
 import static com.mls.booking.util.Validator.checkNull;
 
 /**
@@ -72,7 +74,7 @@ public class Helpers {
         final List<String> inputs = new ArrayList<String>();
         final BufferedReader reader = new BufferedReader(new FileReader(file.getPath()));
         String line = "";
-        while ((line = reader.readLine()) != null) {
+        while (Boolean.FALSE.equals(isStringEmpty(line = reader.readLine()))) {
             inputs.add(line);
         }
 
@@ -94,10 +96,11 @@ public class Helpers {
         if (Boolean.FALSE.equals(isStringEmpty(dateTime1)) && Boolean.FALSE.equals(isStringEmpty(dateTime2)))
             return trimWhiteSpaceOfString(dateTime1) + " " + trimWhiteSpaceOfString(dateTime2);
         else
-            logAndThrow(new NullPointerException(), LOGGER);
-        return null;
+            throw new NullPointerException();
     }
 
+
+    /** LocalDateTime utis */
     /**
      * Convert a string to LocalDateTime format.
      *
@@ -132,6 +135,40 @@ public class Helpers {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(dateTimeFormat);
 
         return LocalDate.parse(time, dateTimeFormatter);
+    }
+
+    public static boolean isGreaterThanOrEqual(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
+        checkNull(startTime, "startTime");
+        checkNull(endTime, "endTime");
+        return startTime.isAfter(endTime) || startTime.isEqual(endTime);
+    }
+
+    public static boolean isLessThanOrEqual(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
+        checkNull(startTime, "startTime");
+        checkNull(endTime, "endTime");
+
+        return startTime.isBefore(endTime) || startTime.isEqual(endTime);
+    }
+
+    public static boolean isEqual(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
+        checkNull(startTime, "startTime");
+        checkNull(endTime, "endTime");
+
+        return startTime.isEqual(endTime);
+    }
+
+    public static boolean isLessThan(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
+        checkNull(startTime, "startTime");
+        checkNull(endTime, "endTime");
+
+        return startTime.isBefore(endTime);
+    }
+
+    public static boolean isGreaterThan(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
+        checkNull(startTime, "startTime");
+        checkNull(endTime, "endTime");
+
+        return startTime.isAfter(endTime);
     }
 
 }

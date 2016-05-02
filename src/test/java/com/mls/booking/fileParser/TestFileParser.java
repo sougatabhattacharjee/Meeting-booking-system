@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.mls.booking.util.Helpers.isListEmpty;
+import static com.mls.booking.util.Helpers.isStringEmpty;
 import static com.mls.booking.util.Validator.checkNull;
 
 /**
@@ -18,13 +19,11 @@ import static com.mls.booking.util.Validator.checkNull;
  */
 public class TestFileParser {
 
-    private final static String INPUT_FILE_PATH = "fileParser/";
-
     @Test
     public void testCompanyOfficeHoursFormat_WhenInputIsValid() throws IOException, InvalidFormatException {
         final String inputFileName = "validInputToCheckCompanyOfficeHoursFormat";
 
-        final List<String> companyOfficeHours = fileParse(INPUT_FILE_PATH + inputFileName);
+        final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
 
         for (final String companyOfficeHour : companyOfficeHours) {
@@ -36,11 +35,11 @@ public class TestFileParser {
     public void testCompanyOfficeHoursFormat_WhenInputIsNotValid() throws IOException, InvalidFormatException {
         final String inputFileName = "inValidInputToCheckCompanyOfficeHoursFormat";
 
-        final List<String> companyOfficeHours = fileParse(INPUT_FILE_PATH + inputFileName);
+        final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
 
         for (final String companyOfficeHour : companyOfficeHours) {
-            Assert.assertFalse(fileParser.validateCompanyOfficeHoursFormat(companyOfficeHour));
+            fileParser.validateCompanyOfficeHoursFormat(companyOfficeHour);
         }
     }
 
@@ -48,7 +47,7 @@ public class TestFileParser {
     public void testBookingRequestFormat_WhenInputIsValid() throws IOException, InvalidFormatException {
         final String inputFileName = "validInputToCheckBookingRequestFormat";
 
-        final List<String> companyOfficeHours = fileParse(INPUT_FILE_PATH + inputFileName);
+        final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
 
         for (final String companyOfficeHour : companyOfficeHours) {
@@ -60,11 +59,11 @@ public class TestFileParser {
     public void testBookingRequestFormat_WhenInputIsNotValid() throws IOException, InvalidFormatException {
         final String inputFileName = "inValidInputToCheckBookingRequestFormat";
 
-        final List<String> companyOfficeHours = fileParse(INPUT_FILE_PATH + inputFileName);
+        final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
 
         for (final String companyOfficeHour : companyOfficeHours) {
-            Assert.assertFalse(fileParser.validateBookingRequestFormat(companyOfficeHour));
+            fileParser.validateBookingRequestFormat(companyOfficeHour);
         }
     }
 
@@ -72,7 +71,7 @@ public class TestFileParser {
     public void testMeetingScheduleFormat_WhenInputIsValid() throws IOException, InvalidFormatException {
         final String inputFileName = "validInputToCheckMeetingScheduleFormat";
 
-        final List<String> companyOfficeHours = fileParse(INPUT_FILE_PATH + inputFileName);
+        final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
 
         for (final String companyOfficeHour : companyOfficeHours) {
@@ -84,14 +83,13 @@ public class TestFileParser {
     public void testMeetingScheduleFormat_WhenInputIsNotValid() throws IOException, InvalidFormatException {
         final String inputFileName = "inValidInputToCheckMeetingScheduleFormat";
 
-        final List<String> companyOfficeHours = fileParse(INPUT_FILE_PATH + inputFileName);
+        final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
 
         for (final String companyOfficeHour : companyOfficeHours) {
-            Assert.assertFalse(fileParser.validateMeetingScheduleFormat(companyOfficeHour));
+            fileParser.validateMeetingScheduleFormat(companyOfficeHour);
         }
     }
-
 
     /**
      * Helpers method
@@ -112,7 +110,7 @@ public class TestFileParser {
 
         final BufferedReader reader = new BufferedReader(new FileReader(file.getPath()));
         String line = "";
-        while ((line = reader.readLine()) != null) {
+        while (Boolean.FALSE.equals(isStringEmpty(line = reader.readLine()))) {
             inputs.add(line);
         }
 

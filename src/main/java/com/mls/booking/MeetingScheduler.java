@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-import static com.mls.booking.errors.ExceptionUtil.logAndThrow;
 import static com.mls.booking.util.Helpers.*;
 import static com.mls.booking.util.Validator.checkNull;
 
@@ -37,33 +36,35 @@ public class MeetingScheduler {
 
     public void process(@Nonnull final String fileName) throws IOException {
         checkNull(fileName, "fileName");
+
         LOGGER.info("Input File Validation started.");
         final Long startTime = DateTimeUtils.currentTimeMillis();
 
+        // retrieve the file by its filename and validates the file
         final File inputFile = getFile(fileName);
         final FileValidator fileValidator = new FileValidatorImpl();
-
         try {
             fileValidator.validateFileFormat(inputFile);
-        } catch (final InvalidFormatException e) {
+        } catch (final InvalidFormatException | FileNotFoundException e) {
             LOGGER.error(e.getMessage());
-        }
-        catch (final FileNotFoundException ex) {
-            LOGGER.error(ex.getMessage());
         }
 
         final List<String> inputFileContent = getFileAsList(inputFile);
-
         final List<EmployeeMeetingSchedule> inputFileContentModel = convertListToModel(inputFileContent);
 
         final Long endTime = DateTimeUtils.currentTimeMillis();
         final Long totalTime = endTime - startTime;
-
         LOGGER.info("Input File Validation Completed. It takes " + totalTime + "ms.");
 
         checkOverlapSchedule(inputFileContentModel);
     }
 
+    /**
+     * Check if any of the meeting time request overlap with other.
+     * To check this, we have to add every record to an interval tree data structure
+     *
+     * @param employeeMeetingSchedules ordered list to be checked for overlapped meeting time
+     */
     public void checkOverlapSchedule(@Nonnull final List<EmployeeMeetingSchedule> employeeMeetingSchedules) {
         checkNull(employeeMeetingSchedules, "employeeMeetingSchedules");
 
@@ -75,21 +76,36 @@ public class MeetingScheduler {
         getActualMeetingSchedule(meetingScheduleIntervalModel.getRoot());
     }
 
+    /**
+     * Traverse the interval tree and get the filtered data
+     *
+     * @param rootNode root node of the tree
+     */
     public void getActualMeetingSchedule(@Nullable final ScheduleIntervalNode rootNode) {
+
         final MeetingScheduleInterval meetingScheduleIntervalModel = new MeetingScheduleIntervalModel();
-        LinkedHashSet<EmployeeMeetingSchedule> employeeMeetingSchedules = meetingScheduleIntervalModel.traversal(rootNode);
+        final LinkedHashSet<EmployeeMeetingSchedule> employeeMeetingSchedules =
+                meetingScheduleIntervalModel.traversal(rootNode);
 
         generateOutput(employeeMeetingSchedules);
     }
 
+    /**
+     * convert the data retrieved from the interval tree to defined output model
+     *
+     * @param employeeMeetingSchedules filtered list from which output data structure to be generated
+     */
     public void generateOutput(@Nonnull final LinkedHashSet<EmployeeMeetingSchedule> employeeMeetingSchedules) {
-        Iterator itr = employeeMeetingSchedules.iterator();
-        Map<String, List<Result>> outputStructure = new LinkedHashMap<>();
+        checkNull(employeeMeetingSchedules, "employeeMeetingSchedules");
+
+        final Iterator itr = employeeMeetingSchedules.iterator();
+        final Map<String, List<Result>> outputStructure = new LinkedHashMap<>();
+
         while (itr.hasNext()) {
-            EmployeeMeetingSchedule employeeMeetingSchedule = (EmployeeMeetingSchedule) itr.next();
+            final EmployeeMeetingSchedule employeeMeetingSchedule = (EmployeeMeetingSchedule) itr.next();
 
             if (outputStructure.containsKey(employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString())) {
-                List<Result> results = outputStructure.get(employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString());
+                final List<Result> results = outputStructure.get(employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString());
 
                 results.add(new Result(employeeMeetingSchedule.getEmployeeId(),
                         generateMeetingTimeFormat(employeeMeetingSchedule.getMeeting().getMeetingStartTime().getHourOfDay(),
@@ -100,7 +116,7 @@ public class MeetingScheduler {
                 outputStructure.put(employeeMeetingSchedule.getMeeting().getMeetingStartDate().toString(), results);
 
             } else {
-                List<Result> results = new LinkedList<>();
+                final List<Result> results = new LinkedList<>();
 
                 results.add(new Result(employeeMeetingSchedule.getEmployeeId(),
                         generateMeetingTimeFormat(employeeMeetingSchedule.getMeeting().getMeetingStartTime().getHourOfDay(),
@@ -115,18 +131,23 @@ public class MeetingScheduler {
         generateOutput(outputStructure);
     }
 
-    public void generateOutput(Map<String, List<Result>> outputStructure) {
-        Iterator entries = outputStructure.entrySet().iterator();
-        System.out.println();
+    /**
+     * Generate the final output to the console.
+     */
+    public void generateOutput(@Nonnull final Map<String, List<Result>> outputStructure) {
+        checkNull(outputStructure, "outputStructure");
+
+        final Iterator entries = outputStructure.entrySet().iterator();
         System.out.println();
         System.out.println("********************* Meeting Schedule ****************************");
+        System.out.println();
         while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
+            final Map.Entry thisEntry = (Map.Entry) entries.next();
             String key = (String) thisEntry.getKey();
             System.out.println(key);
 
-            List<Result> values = (List<Result>) thisEntry.getValue();
-            for(Result result : values) {
+            final List<Result> values = (List<Result>) thisEntry.getValue();
+            for (final Result result : values) {
                 System.out.println(result.toString());
             }
         }
@@ -134,14 +155,31 @@ public class MeetingScheduler {
         System.out.println("*******************************************************************");
     }
 
-    public String generateMeetingTimeFormat(int hour, int minute) {
-        String formatHour = (hour < 10) ? "0" + hour : "" + hour;
-        String formatMinute = (minute < 10) ? "0" + minute : "" + minute;
+    /**
+     * Generate the time format as HH:mm.
+     *
+     * @param hour   input hour
+     * @param minute input minute
+     * @return hour:minute
+     */
+    @Nonnull
+    public String generateMeetingTimeFormat(@Nonnull final int hour, @Nonnull final int minute) {
+        checkNull(hour, "hour");
+        checkNull(minute, "minute");
+
+        final String formatHour = (hour < 10) ? "0" + hour : "" + hour;
+        final String formatMinute = (minute < 10) ? "0" + minute : "" + minute;
 
         return formatHour + ":" + formatMinute;
     }
 
-
+    /**
+     * Convert the list of input contents into our internal model (EmployeeMeetingSchedule) of list.
+     * Then sort the list by submission request time.
+     *
+     * @param inputFileContent input list of contents
+     * @return ordered list<EmployeeMeetingSchedule>
+     */
     @Nonnull
     private List<EmployeeMeetingSchedule> convertListToModel(@Nonnull final List<String> inputFileContent) {
         checkNull(inputFileContent, "inputFileContent");
@@ -205,10 +243,10 @@ public class MeetingScheduler {
         final LocalDateTime officeStartTime = LocalDateTime.parse(officeStart, dateTimeFormatter);
         final LocalDateTime officeEndTime = LocalDateTime.parse(officeEnd, dateTimeFormatter);
 
-        return (officeStartTime.isEqual(meetingStartTime) || officeStartTime.isBefore(meetingStartTime))
-                && (officeEndTime.isAfter(meetingStartTime))
-                && (officeEndTime.isEqual(meetingEndTime) || officeEndTime.isAfter(meetingEndTime))
-                && (officeStartTime.isBefore(meetingEndTime));
+        return isLessThanOrEqual(officeStartTime, meetingStartTime)
+                && isGreaterThan(officeEndTime, meetingStartTime)
+                && isGreaterThanOrEqual(officeEndTime, meetingEndTime)
+                && isLessThan(officeStartTime, meetingEndTime);
     }
 
     /**
@@ -280,8 +318,10 @@ public class MeetingScheduler {
 
         if (getTimeFormat(submissionDate, submissionTime) != null) {
             employeeMeetingSchedule.setSubmissionTime(getTimeFormat(submissionDate, submissionTime));
-        } else
-            logAndThrow(new NullPointerException("getTimeFormat() is null"), LOGGER);
+        } else {
+            LOGGER.fatal("getTimeFormat() is null");
+            throw new NullPointerException("getTimeFormat() is null");
+        }
 
         employeeMeetingSchedule.setEmployeeId(employeeId);
     }
@@ -300,12 +340,16 @@ public class MeetingScheduler {
         //Get file from resources folder
         final ClassLoader classLoader = getClass().getClassLoader();
         File file = null;
+        // read file from resource folder
         if (classLoader.getResource(fileName) != null)
             file = new File(classLoader.getResource(fileName).getFile());
+            // read file from any source
         else if (classLoader.getResource(fileName) == null)
             file = new File(fileName);
-        else
-            logAndThrow(new FileNotFoundException(fileName + " file not found."), LOGGER);
+        else {
+            LOGGER.fatal(fileName + " file not found.");
+            throw new FileNotFoundException(fileName + " file not found.");
+        }
 
         return file;
     }

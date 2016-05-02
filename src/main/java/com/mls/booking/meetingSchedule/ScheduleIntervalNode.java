@@ -26,5 +26,4 @@ public class ScheduleIntervalNode {
         this.employeeMeetingSchedule = employeeMeetingSchedule;
     }
 
-
 }

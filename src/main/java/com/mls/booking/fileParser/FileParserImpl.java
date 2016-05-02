@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.mls.booking.errors.ExceptionUtil.logAndThrow;
 import static com.mls.booking.util.Helpers.trimWhiteSpaceOfString;
 import static com.mls.booking.util.Validator.checkNull;
 
@@ -26,13 +25,17 @@ public class FileParserImpl implements FileParser {
     public boolean validateCompanyOfficeHoursFormat(@Nonnull final String time) throws InvalidFormatException {
         checkNull(time, "time");
 
-        if (Boolean.FALSE.equals(validateStringFormatParts(time, FileParserParams.COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS)))
-            logAndThrow(new InvalidFormatException("Invalid formatting. Line should contain "
-                    + FileParserParams.COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS + "parts"), LOGGER);
+        if (Boolean.FALSE.equals(validateStringFormatParts(time, FileParserParams.COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS))) {
 
-        if (Boolean.FALSE.equals(validateStringPattern(FileParserParams.COMPANY_OFFICE_HOURS_FORMAT, time)))
-            logAndThrow(new InvalidFormatException("Invalid time formatiing for company office hours. It should be in 24 hour " +
-                    "clock format"), LOGGER);
+            throw new InvalidFormatException("Invalid formatting. Line should contain "
+                    + FileParserParams.COMPANY_OFFICE_HOURS_FORMAT_NUMBER_OF_PARTS + " parts");
+        }
+
+        if (Boolean.FALSE.equals(validateStringPattern(FileParserParams.COMPANY_OFFICE_HOURS_FORMAT, time))) {
+
+            throw new InvalidFormatException("Invalid time formatiing for company office hours. It should be in 24 hour " +
+                    "clock format");
+        }
 
         return true;
     }
@@ -43,30 +46,30 @@ public class FileParserImpl implements FileParser {
 
         if (Boolean.FALSE.equals(validateStringFormatParts(bookingRequestFormat,
                 FileParserParams.BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS))) {
-            logAndThrow(new InvalidFormatException("Invalid formatting. " +
+            throw new InvalidFormatException("Invalid formatting. " +
                     "request submission time, in the format [YYYY-MM-DD HH:MM:SS employee id]" +
-                    " should contain " + FileParserParams.BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS + " parts"), LOGGER);
+                    " should contain " + FileParserParams.BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS + " parts");
         }
 
         final String[] tokens = bookingRequestFormat.split(FileParserParams.SPLIT_PATTERN);
         assert tokens.length == FileParserParams.BOOKING_REQUEST_TIME_FORMAT_NUMBER_OF_PARTS;
-
         final String dateFormat_YYYYMMDD = trimWhiteSpaceOfString(tokens[0]);
         final String timeFormat_HHMMSS = trimWhiteSpaceOfString(tokens[1]);
         final String employeeId = trimWhiteSpaceOfString(tokens[2]);
 
         if (Boolean.FALSE.equals(validateDateFormat(dateFormat_YYYYMMDD))) {
-            logAndThrow(new InvalidDateFormatException("Invalid date formatting for "
-                    + dateFormat_YYYYMMDD + " request submission time, in the format YYYY-MM-DD HH:MM:SS"), LOGGER);
+            throw new InvalidDateFormatException("Invalid date formatting for "
+                    + dateFormat_YYYYMMDD + " request submission time, in the format YYYY-MM-DD HH:MM:SS");
         }
 
         if (Boolean.FALSE.equals(validateTimeFormatHHMMSS(timeFormat_HHMMSS))) {
-            logAndThrow(new InvalidDateFormatException("Invalid date formatting for "
-                    + timeFormat_HHMMSS + " request submission time, in the format YYYY-MM-DD HH:MM:SS"), LOGGER);
+            throw new InvalidDateFormatException("Invalid date formatting for "
+                    + timeFormat_HHMMSS + " request submission time, in the format YYYY-MM-DD HH:MM:SS");
+
         }
 
         if (Boolean.FALSE.equals(validateEmployeeId(employeeId))) {
-            logAndThrow(new InvalidFormatException("Invalid employee Id " + employeeId), LOGGER);
+            throw new InvalidFormatException("Invalid employee Id " + employeeId);
         }
 
         return true;
@@ -78,30 +81,30 @@ public class FileParserImpl implements FileParser {
 
         if (Boolean.FALSE.equals(validateStringFormatParts(meetingScheduleFormat,
                 FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS))) {
-            logAndThrow(new InvalidFormatException("Invalid formatting. " +
+
+            throw new InvalidFormatException("Invalid formatting. " +
                     "meeting meetingStartTime time, in the format [YYYY-MM-DD HH:MM Duration(hours)]" +
-                    " should contain " + FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS + " parts"), LOGGER);
+                    " should contain " + FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS + " parts");
         }
 
         final String[] tokens = meetingScheduleFormat.split(FileParserParams.SPLIT_PATTERN);
         assert tokens.length == FileParserParams.MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS;
-
         final String dateFormat_YYYYMMDD = trimWhiteSpaceOfString(tokens[0]);
         final String timeFormat_HHMM = trimWhiteSpaceOfString(tokens[1]);
         final String duration = trimWhiteSpaceOfString(tokens[2]);
 
         if (Boolean.FALSE.equals(validateDateFormat(dateFormat_YYYYMMDD))) {
-            logAndThrow(new InvalidDateFormatException("Invalid date formatting for "
-                    + dateFormat_YYYYMMDD + " request submission time, in the format YYYY-MM-DD HH:MM"), LOGGER);
+            throw new InvalidDateFormatException("Invalid date formatting for "
+                    + dateFormat_YYYYMMDD + " request submission time, in the format YYYY-MM-DD HH:MM");
         }
 
         if (Boolean.FALSE.equals(validateTimeFormatHHMM(timeFormat_HHMM))) {
-            logAndThrow(new InvalidDateFormatException("Invalid date formatting for "
-                    + timeFormat_HHMM + " request submission time, in the format YYYY-MM-DD HH:MM"), LOGGER);
+            throw new InvalidDateFormatException("Invalid date formatting for "
+                    + timeFormat_HHMM + " request submission time, in the format YYYY-MM-DD HH:MM");
         }
 
         if (Boolean.FALSE.equals(validateMeetingDuration(duration))) {
-            logAndThrow(new InvalidFormatException("Invalid meeting duration " + duration), LOGGER);
+            throw new InvalidFormatException("Invalid meeting duration " + duration);
         }
 
         return true;
@@ -184,10 +187,8 @@ public class FileParserImpl implements FileParser {
 
         if (Boolean.FALSE.equals(validateStringPattern(FileParserParams.MEETING_DURATION_FORMAT, meetingDuration))) {
             if (meetingDuration.matches("[0-9]+")) {
-                final int duration = Integer.parseInt(meetingDuration);
-                logAndThrow(new InvalidFormatException("Invalid meeting duration, should be greater than 0"), LOGGER);
+                throw new InvalidFormatException("Invalid meeting duration, should be greater than 0");
             }
-
             return false;
         }
         return true;

@@ -5,10 +5,10 @@ import org.joda.time.LocalDateTime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.LinkedHashSet;
 import java.util.Stack;
 
+import static com.mls.booking.util.Helpers.*;
 import static com.mls.booking.util.Validator.checkNull;
 
 /**
@@ -58,17 +58,17 @@ public class MeetingScheduleIntervalModel implements MeetingScheduleInterval {
 
     @Override
     public LinkedHashSet<EmployeeMeetingSchedule> traversal(@Nullable ScheduleIntervalNode rootNode) {
-        LinkedHashSet<EmployeeMeetingSchedule> employeeMeetingSchedules = new LinkedHashSet<>();
+        final LinkedHashSet<EmployeeMeetingSchedule> employeeMeetingSchedules = new LinkedHashSet<>();
 
         if (rootNode == null) {
             return employeeMeetingSchedules;
         }
 
-        Stack<ScheduleIntervalNode> stack = new Stack<>();
+        final Stack<ScheduleIntervalNode> stack = new Stack<>();
         stack.push(rootNode);
 
         while (!stack.isEmpty()) {
-            ScheduleIntervalNode top = stack.peek();
+            final ScheduleIntervalNode top = stack.peek();
             if (top.leftNode != null) {
                 stack.push(top.leftNode);
                 top.leftNode = null;
@@ -146,37 +146,4 @@ public class MeetingScheduleIntervalModel implements MeetingScheduleInterval {
         return intervalLeftSubtree != null && isGreaterThan(intervalLeftSubtree.maxMeetingEndTime, startTime);
     }
 
-    private boolean isGreaterThanOrEqual(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
-        checkNull(startTime, "startTime");
-        checkNull(endTime, "endTime");
-        return startTime.isAfter(endTime) || startTime.isEqual(endTime);
-    }
-
-    private boolean isLessThanOrEqual(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
-        checkNull(startTime, "startTime");
-        checkNull(endTime, "endTime");
-
-        return startTime.isBefore(endTime) || startTime.isEqual(endTime);
-    }
-
-    private boolean isEqual(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
-        checkNull(startTime, "startTime");
-        checkNull(endTime, "endTime");
-
-        return startTime.isEqual(endTime);
-    }
-
-    private boolean isLessThan(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
-        checkNull(startTime, "startTime");
-        checkNull(endTime, "endTime");
-
-        return startTime.isBefore(endTime);
-    }
-
-    private boolean isGreaterThan(@Nonnull final LocalDateTime startTime, @Nonnull final LocalDateTime endTime) {
-        checkNull(startTime, "startTime");
-        checkNull(endTime, "endTime");
-
-        return startTime.isAfter(endTime);
-    }
 }

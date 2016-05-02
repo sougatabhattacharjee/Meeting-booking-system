@@ -16,14 +16,12 @@ import static com.mls.booking.util.Validator.checkNull;
  */
 public class TestFileValidator {
 
-    private final static String INPUT_FILE_PATH = "fileValidator/";
-
     @Test
     public void testInputFileValidation_WhenValidInputs() throws IOException, InvalidFormatException {
         final String inputFileName = "inputValid";
 
-        File inputFile = getFile(INPUT_FILE_PATH + inputFileName);
-        FileValidator fileValidator = new FileValidatorImpl();
+        final File inputFile = getFile(inputFileName);
+        final FileValidator fileValidator = new FileValidatorImpl();
         Assert.assertTrue(fileValidator.validateFileFormat(inputFile));
     }
 
@@ -31,8 +29,8 @@ public class TestFileValidator {
     public void testInputFileValidation_WhenInValidInputs() throws IOException, InvalidFormatException {
         final String inputFileName = "inputInValid";
 
-        File inputFile = getFile(INPUT_FILE_PATH + inputFileName);
-        FileValidator fileValidator = new FileValidatorImpl();
+        final File inputFile = getFile(inputFileName);
+        final FileValidator fileValidator = new FileValidatorImpl();
         Assert.assertTrue(fileValidator.validateFileFormat(inputFile));
     }
 

@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.mls.booking.errors.ExceptionUtil.logAndThrow;
 import static com.mls.booking.util.Helpers.getFileAsList;
 import static com.mls.booking.util.Validator.checkNull;
 
@@ -24,8 +23,10 @@ public class FileValidatorImpl implements FileValidator {
         checkNull(file, "file");
 
         final List<String> fileInputs = getFileAsList(file);
-        if (Boolean.FALSE.equals(checkLengthOfInputs(fileInputs)))
-            logAndThrow(new InvalidFormatException("Inputs should be atleast 3 lines and then followed by every 2 lines"), LOGGER);
+        if (Boolean.FALSE.equals(checkLengthOfInputs(fileInputs))) {
+            LOGGER.error("Inputs should be atleast 3 lines and then followed by every 2 lines");
+            throw new InvalidFormatException("Inputs should be atleast 3 lines and then followed by every 2 lines");
+        }
 
         final FileParser fileParser = new FileParserImpl();
 

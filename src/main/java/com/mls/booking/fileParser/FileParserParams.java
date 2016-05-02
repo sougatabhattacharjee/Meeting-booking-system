@@ -78,4 +78,9 @@ public class FileParserParams {
      * It has 3 subsections, an example is "2015-08-21 09:00 2"
      */
     public static final int MEETING_SCHEDULE_FORMAT_NUMBER_OF_PARTS = 3;
+
+    /**
+     * default file "input" can be retrieved from resource folder
+     */
+    public static final String DEFAULT_INPUT_FILE = "input";
 }
