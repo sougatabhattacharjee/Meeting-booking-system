@@ -74,5 +74,5 @@ After building the project successfully, type <br />
 ## TODO
 * Dockerized the whole project or deploy to Heroku
 * UUID generation to verify uniqueness
-* Mock tests
+* Mock tests to check the interval tree functionality 
 * Test the performance and correctness of the program with large datasets
