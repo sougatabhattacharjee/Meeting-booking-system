@@ -60,7 +60,7 @@ The system must process input as text.
 * Traversing the tree takes O(n) time
 * Finally unit test cases are added to check the implementations
 
-## Build
+## Compile/Build
 Go to the project directory and open console or terminal.
 * In console, type ``mvn package``
 * If you need cleaning the dependency jars and copying to the project artifact, type <br />
