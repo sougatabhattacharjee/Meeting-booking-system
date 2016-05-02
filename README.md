@@ -52,7 +52,7 @@ The system must process input as text.
 * Read the input file and validate the content structure
 * Initial filtering, discard booking requests which are falling outside of office hours
 * Rest of the data stored into array and sorted by the submission time
-* Implement an [interval tree](https://en.wikipedia.org/wiki/Interval_tree)
+* Implement and used [interval tree](https://en.wikipedia.org/wiki/Interval_tree) for comparing the meeting time intervals
 * Insert all the data from the sorted array to the interval tree and discard values which are overlapping
 * Traverse the tree in Inorder way to retrieve the final list of data
 * Convert the the list of data into final output format
