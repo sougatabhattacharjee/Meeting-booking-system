@@ -67,7 +67,7 @@ Go to the project directory and open console or terminal.
 ``mvn clean dependency:copy-dependencies package``
 
 ## Run
-After building the project successfully, please type
+After building the project successfully, please type  
 ``java -cp target/MeetingBooking-1.0-SNAPSHOT.jar com.mls.booking.Main``
 
 ## TODO
