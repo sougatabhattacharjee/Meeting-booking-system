@@ -69,4 +69,7 @@ Go to the project directory and open console or terminal.
 After building the project successfully, please type ``java -cp target/MeetingBooking-1.0-SNAPSHOT.jar com.mls.booking.Main``
 
 ## TODO
-* Dockerized the whole project
+* Dockerized the whole project or deploy to Heroku
+* UUID generation to verify uniqueness
+* Mock tests
+* Test the performance and correctness of the program with large datasets
