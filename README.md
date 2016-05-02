@@ -63,10 +63,12 @@ The system must process input as text.
 ## Build
 Go to the project directory and open console or terminal.
 * In console, type ``mvn package``
-* If you need cleaning the dependency jars and copying to the project artifact, type ``mvn clean dependency:copy-dependencies package``
+* If you need cleaning the dependency jars and copying to the project artifact, type
+``mvn clean dependency:copy-dependencies package``
 
 ## Run
-After building the project successfully, please type ``java -cp target/MeetingBooking-1.0-SNAPSHOT.jar com.mls.booking.Main``
+After building the project successfully, please type
+``java -cp target/MeetingBooking-1.0-SNAPSHOT.jar com.mls.booking.Main``
 
 ## TODO
 * Dockerized the whole project or deploy to Heroku
