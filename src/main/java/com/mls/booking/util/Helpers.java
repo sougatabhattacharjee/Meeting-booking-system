@@ -1,5 +1,7 @@
 package com.mls.booking.util;
 
+import com.mls.booking.errors.InvalidFileFormatException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.mls.booking.fileParser.FileParserParams.INPUT_FILE_EXTENSION;
 import static com.mls.booking.util.Validator.checkNull;
 
 /**
@@ -171,4 +174,12 @@ public class Helpers {
         return startTime.isAfter(endTime);
     }
 
+    public static boolean ifFileIsText(@Nonnull final String fileName) throws InvalidFileFormatException {
+        checkNull(fileName, "fileName");
+
+        if(FilenameUtils.isExtension(fileName.toLowerCase(), INPUT_FILE_EXTENSION.toLowerCase()))
+            return true;
+        else
+            throw new InvalidFileFormatException("Input file should be a text file");
+    }
 }

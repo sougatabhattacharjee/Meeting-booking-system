@@ -21,7 +21,7 @@ public class TestFileParser {
 
     @Test
     public void testCompanyOfficeHoursFormat_WhenInputIsValid() throws IOException, InvalidFormatException {
-        final String inputFileName = "validInputToCheckCompanyOfficeHoursFormat";
+        final String inputFileName = "validInputToCheckCompanyOfficeHoursFormat.txt";
 
         final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
@@ -33,7 +33,7 @@ public class TestFileParser {
 
     @Test(expected = InvalidFormatException.class)
     public void testCompanyOfficeHoursFormat_WhenInputIsNotValid() throws IOException, InvalidFormatException {
-        final String inputFileName = "inValidInputToCheckCompanyOfficeHoursFormat";
+        final String inputFileName = "inValidInputToCheckCompanyOfficeHoursFormat.txt";
 
         final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
@@ -45,7 +45,7 @@ public class TestFileParser {
 
     @Test
     public void testBookingRequestFormat_WhenInputIsValid() throws IOException, InvalidFormatException {
-        final String inputFileName = "validInputToCheckBookingRequestFormat";
+        final String inputFileName = "validInputToCheckBookingRequestFormat.txt";
 
         final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
@@ -57,7 +57,7 @@ public class TestFileParser {
 
     @Test(expected = InvalidFormatException.class)
     public void testBookingRequestFormat_WhenInputIsNotValid() throws IOException, InvalidFormatException {
-        final String inputFileName = "inValidInputToCheckBookingRequestFormat";
+        final String inputFileName = "inValidInputToCheckBookingRequestFormat.txt";
 
         final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();
@@ -69,7 +69,7 @@ public class TestFileParser {
 
     @Test
     public void testMeetingScheduleFormat_WhenInputIsValid() throws IOException, InvalidFormatException {
-        final String inputFileName = "validInputToCheckMeetingScheduleFormat";
+        final String inputFileName = "validInputToCheckMeetingScheduleFormat.txt";
 
         final List<String> companyOfficeHours = fileParse(inputFileName);
         final FileParser fileParser = new FileParserImpl();

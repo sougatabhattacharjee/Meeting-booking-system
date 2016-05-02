@@ -15,6 +15,5 @@ H:\MLS\booking\src\main\java\com\mls\booking\util\Validator.java
 H:\MLS\booking\src\main\java\com\mls\booking\fileParser\FileParser.java
 H:\MLS\booking\src\main\java\com\mls\booking\MeetingScheduler.java
 H:\MLS\booking\src\main\java\com\mls\booking\model\OfficeHour.java
-H:\MLS\booking\src\main\java\com\mls\booking\errors\ExceptionUtil.java
 H:\MLS\booking\src\main\java\com\mls\booking\meetingSchedule\MeetingScheduleIntervalModel.java
 H:\MLS\booking\src\main\java\com\mls\booking\errors\InvalidFileFormatException.java

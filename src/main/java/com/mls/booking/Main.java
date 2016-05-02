@@ -1,5 +1,6 @@
 package com.mls.booking;
 
+import com.mls.booking.errors.InvalidFileFormatException;
 import com.mls.booking.errors.InvalidFormatException;
 import org.apache.log4j.Logger;
 
@@ -17,7 +18,7 @@ public class Main {
 
     private final static Logger LOGGER = Logger.getLogger(Main.class);
 
-    public static void main(String[] args) throws InvalidFormatException, IOException {
+    public static void main(String[] args) throws InvalidFormatException, IOException, InvalidFileFormatException {
         LOGGER.info("Application Started!");
 
         String inputFileName = "";

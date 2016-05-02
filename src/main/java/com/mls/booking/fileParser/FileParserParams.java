@@ -82,5 +82,10 @@ public class FileParserParams {
     /**
      * default file "input" can be retrieved from resource folder
      */
-    public static final String DEFAULT_INPUT_FILE = "input";
+    public static final String DEFAULT_INPUT_FILE = "input.txt";
+
+    /**
+     * input file extension should be txt
+     */
+    public static final String INPUT_FILE_EXTENSION = "txt";
 }

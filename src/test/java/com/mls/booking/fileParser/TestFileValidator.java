@@ -18,7 +18,7 @@ public class TestFileValidator {
 
     @Test
     public void testInputFileValidation_WhenValidInputs() throws IOException, InvalidFormatException {
-        final String inputFileName = "inputValid";
+        final String inputFileName = "inputValid.txt";
 
         final File inputFile = getFile(inputFileName);
         final FileValidator fileValidator = new FileValidatorImpl();
@@ -27,7 +27,7 @@ public class TestFileValidator {
 
     @Test(expected = InvalidFormatException.class)
     public void testInputFileValidation_WhenInValidInputs() throws IOException, InvalidFormatException {
-        final String inputFileName = "inputInValid";
+        final String inputFileName = "inputInValid.txt";
 
         final File inputFile = getFile(inputFileName);
         final FileValidator fileValidator = new FileValidatorImpl();

@@ -1,5 +1,6 @@
 package com.mls.booking;
 
+import com.mls.booking.errors.InvalidFileFormatException;
 import com.mls.booking.errors.InvalidFormatException;
 import com.mls.booking.fileParser.FileParserParams;
 import com.mls.booking.fileParser.FileValidator;
@@ -34,11 +35,14 @@ public class MeetingScheduler {
 
     private final static Logger LOGGER = Logger.getLogger(MeetingScheduler.class);
 
-    public void process(@Nonnull final String fileName) throws IOException {
+    public void process(@Nonnull final String fileName) throws IOException, InvalidFileFormatException {
         checkNull(fileName, "fileName");
 
         LOGGER.info("Input File Validation started.");
         final Long startTime = DateTimeUtils.currentTimeMillis();
+
+        if (!ifFileIsText(fileName))
+            throw new InvalidFileFormatException("Wrong File Format");
 
         // retrieve the file by its filename and validates the file
         final File inputFile = getFile(fileName);
